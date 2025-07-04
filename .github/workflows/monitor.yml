@@ -21,7 +21,11 @@ jobs:
         run: pip install requests beautifulsoup4
 
       - name: Run tracker
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_USER_ID: ${{ secrets.TELEGRAM_USER_ID }}
         run: python tracker.py
+
 
       - name: Commit hash update
         run: |
