@@ -56,4 +56,28 @@ def send_telegram_alert(message):
         if response.status_code != 200:
             print(f"⚠️ Telegram error: {response.text}")
         else:
-            print("✅ Telegram alert sent
+            print("✅ Telegram alert sent.")
+    except Exception as e:
+        print(f"⚠️ Telegram request failed: {e}")
+
+# === Main logic ===
+def main():
+    print("🔍 Checking for updates...")
+    content = fetch_content()
+    if not content:
+        print("❌ No content fetched. Exiting.")
+        return
+
+    new_hash = calculate_hash(content)
+    old_hash = read_last_hash()
+
+    if new_hash != old_hash:
+        print("🔔 Website content changed!")
+        send_telegram_alert(f"🔔 Change detected on: `{URL}`")
+    else:
+        print("✅ No change detected.")
+
+    write_hash(new_hash)
+
+if __name__ == "__main__":
+    main()
